@@ -12,6 +12,11 @@ d3.json("samples.json").then(function createPlotly(data) {
     .htlm(function(d) {
         return `option>${d}</option>`;
     });
+
+    var dropdownMenu =
+    var dropdownValue =
+    var index = 
+
 });
 //Create a horizontal bar chart with a dropdown menu to display the top 10 OTUs found in that individual.
 
