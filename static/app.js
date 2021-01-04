@@ -77,6 +77,115 @@ d3.json("samples.json").then(function createPlotly(data) {
     };
 
     Plotly.newPlot("bubble", bubbleData, bubbleLabels);
+
+    //bonus
+    var degrees = 10 - data.metadata[index].wfreq,
+        radius = 0.6;
+    var radians = (degrees * Math.PI) / 10;
+    var aX = 0.025 * Math.cos((degrees - 5 * Math.PI) / 10);
+    var aY = 0.025 * Math.sin(((degrees - 5) * Math.PI) / 10);
+    var bX = -0.025 * Math.cos(((degrees - 5) * Math.PI) / 10);
+    var bY = -0.025 * Math.sin(((degrees - 5) * Math.PI) / 10);
+    var cX = radius * Math.cos(radians);
+    var cY = radius * Math.sin(radians);
+
+    var path =
+        "M " + aX + " " + aY + " L " + bX + " " + bY + " L " + cX + " " + cY + " Z";
+
+    var gaugedata = [
+        {
+            type: "scatter",
+            x: [0],
+            y: [0],
+            marker: { size: 14, color: "850000" },
+            showlegend: false,
+            name: "Wash per Week",
+            text: data.metadata[index].wfreq,
+            hoverinfo: "text+name"
+        },
+        {
+      // Create 10 elements and hide the half of the pie chart
+            values: [
+                50 / 9,
+                50 / 9,
+                50 / 9,
+                50 / 9,
+                50 / 9,
+                50 / 9,
+                50 / 9,
+                50 / 9,
+                50 / 9,
+                50
+            ],
+            labels: [
+                "0-1",
+                "1-2",
+                "2-3",
+                "3-4",
+                "4-5",
+                "5-6",
+                "6-7",
+                "7-8",
+                "8-9",
+                ""
+            ],
+            marker: {
+            colors: [
+                "rgb(247,242,236)",
+                "rgb(243,240,229)",
+                "rgb(233,231,201)",
+                "rgb(229,233,177)",
+                "rgb(213,229,149)",
+                "rgb(183,205,139)",
+                "rgb(135,192,128)",
+                "rgb(133,188,139)",
+                "rgb(128,181,134)",
+                "rgba(255, 300, 255, 0)"
+            ]
+        },
+
+        hole: 0.5,
+        type: "pie",
+        direction: "clockwise",
+        rotation: 90,
+        text: ["0-1", "1-2", "2-3", "3-4", "4-5", "5-6", "6-7", "7-8", "8-9", ""],
+        textinfo: "text",
+        textposition: "inside",
+        hoverinfo: "none",
+        showlegend: false
+    }
+  ];
+
+  var gaugeLayout = {
+    shapes: [
+      {
+        type: "path",
+        path: path,
+        fillcolor: "850000",
+        line: {
+          color: "850000"
+        }
+      }
+    ],
+    title: "Belly Botton Washing Frequency per Week",
+    xaxis: { visible: false, range: [-1, 1] },
+    yaxis: { visible: false, range: [-1, 1] }
+  };
+
+  Plotly.newPlot("gauge", gaugedata, gaugeLayout);
+
+  // When different test ID is selected, call an function optionChanged
+  d3.select("#selDataset").on("change", optionChanged);
+
+  function optionChanged() {
+    console.log("Different item was selected.");
+    var dropdownMenu = d3.select("#selDataset");
+    var dropdownValue = dropdownMenu.property("value");
+    console.log(`Currently test id ${dropdownValue} is shown on the page`);
+
+    // Update graph
+    createPlotly(data);
+  }
 });
 
 
