@@ -27,6 +27,30 @@ d3.json("samples.json").then(function createPlotly(data) {
             return `${d[0]}:${d[1]}`;
         });
     console.log(Object.defineProperties(data.metadata[index]));
+
+    //Create a horizontal bar chart with a dropdown menu to display the top 10 OTUs found in that individual.
+    var defaultsampleData = data.samples[index].sample_values
+        .slice(0,10)
+        .reverse();
+    var defaultotuData = data.sameples[index].otu_ids.slice(0,10).reverse();
+    var defaultotuLabels = data.samples[index].otu_labels.slice(0, 10).reverse();
+    var defaultyaxis = defaultotuData.map(a => "OTU" + a);
+    var bardata = [
+        {
+            x: defaultsampleData,
+            y: defaultyaxis,
+            type: "bar",
+            orientation: "h",
+            text: defaultotuLabels
+        }
+    ];
+
+    var barLayout = {
+        title: "Top 10 Sample Values",
+        xaxis: { title: "Sample Values"},
+        yaxis: { title: "OTU ID"}
+    };
+    Plotly.newPlot("bar", barData, barLayout);
 });
-//Create a horizontal bar chart with a dropdown menu to display the top 10 OTUs found in that individual.
+
 
