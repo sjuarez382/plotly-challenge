@@ -53,6 +53,30 @@ d3.json("samples.json").then(function createPlotly(data) {
     };
     
     Plotly.newPlot("bar", bardata, barLayout);
+
+    //bubble chart!!
+
+    var bubbleData = [
+        {
+          x: data.samples[index].otu_ids,
+          y: data.samples[index].sample_values,
+          mode: "markers",
+          text: data.samples[index].otu_labels,
+          marker: {
+            size: data.samples[index].sample_values,
+            color: data.samples[index].otu_ids,
+            colorscale: "Viridis"
+          }
+        }
+    ];
+
+    var bubbleLabels = {
+        title: "Bacteria Cultures Per Sample",
+        xaxis: { title: "OTU ID" },
+        yaxis: { title: "Sample Values" }
+    };
+
+    Plotly.newPlot("bubble", bubbleData, bubbleLabels);
 });
 
 
